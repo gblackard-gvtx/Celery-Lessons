@@ -2,6 +2,14 @@
 
 A reference collection of guides and patterns for building production-grade Celery task pipelines in Python 3.12+. The materials focus on **durable, idempotent execution** that survives worker crashes, pod evictions, and network partitions without losing work or producing duplicate side effects.
 
+## FastAPI alignment (recommended)
+
+In our production stacks, Celery workers typically run behind a FastAPI service (FastAPI is the "backend" / API layer that publishes tasks; Celery is the durable execution layer that performs them). When you use these patterns in a FastAPI + Celery system, we recommend following the organization and engineering practices from **zhanymkanov/fastapi-best-practices** and applying them consistently across the FastAPI app *and* the Celery code:
+
+- **Project structure**: organize by domain/module (keep task definitions, schemas, and service code close together).
+- **Configuration**: prefer environment-driven configuration (e.g., `pydantic-settings`) for broker URLs, queue names, timeouts, and feature flags.
+- **Dependencies**: keep dependency boundaries clear (shared Pydantic models/utilities in a common module; avoid circular imports between API and tasks).
+
 ---
 
 ## Contents
